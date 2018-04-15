@@ -1,8 +1,8 @@
 # import src.data_preparation.data_loader as dl
-# import src.classificator.naive_bayes as nb
+# import src.classificators.naive_bayes as nb
 # import src.data_visualization.data_printer as dp
-# import src.classificator.svm as svm
-# import src.classificator.decision_tree as tree
+# import src.classificators.svm as svm
+# import src.classificators.decision_tree as tree
 
 from src.backend import app
 
