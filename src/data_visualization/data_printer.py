@@ -2,7 +2,7 @@
 def match_ids_with_predicted_values(ids, predicted, mapper=lambda x: 1 if x == 4 else 0):
 
     if len(predicted) != len(ids):
-        return
+        return predicted
 
     predicted = list(map(mapper, predicted))
     return dict(zip(ids, predicted))
