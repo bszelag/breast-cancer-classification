@@ -1,8 +1,12 @@
 from sklearn.naive_bayes import GaussianNB
 
+model = None
+
 
 # TODO: make naive_bayes configurable
-def get_trained_model(data, target):
+def train_model(data, target):
+    global model
     model = GaussianNB()
     model.fit(data, target)
-    return model
+
+

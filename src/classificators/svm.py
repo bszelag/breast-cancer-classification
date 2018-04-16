@@ -1,8 +1,10 @@
 from sklearn import svm
 
+model = None
+
 
 # TODO: make svm configurable
-def get_trained_model(data, target):
+def train_model(data, target):
+    global model
     model = svm.SVC()
     model.fit(data, target)
-    return model
