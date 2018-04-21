@@ -1,5 +1,4 @@
 from pymongo.collection import Collection
-
 from src.backend import app, db
 from flask import Blueprint, request, abort, jsonify
 from flask_api import status
@@ -10,6 +9,7 @@ import src.classificators.svm as svm
 import src.classificators.decision_tree as tree
 import bson.json_util as json_util
 import datetime
+
 
 classificators = Blueprint('classificators', __name__)
 algorithms = {
@@ -87,7 +87,3 @@ def train_model(algorithm_name):
     algorithms[algorithm_name].train_model(data, target)
     return "", status.HTTP_200_OK
 
-
-@classificators.route('/<algorithm_name>/stats', methods=['GET'])
-def get_stats(algorithm_name):
-    return "TODO"
