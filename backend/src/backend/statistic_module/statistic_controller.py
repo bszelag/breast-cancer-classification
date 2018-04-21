@@ -14,7 +14,12 @@ def get_options(algorithm_name):
 @statistics.route("/<algorithm_name>/history/<number>", methods=["GET"])
 def get_history(algorithm_name, number):
     collection = db.get_collection(algorithm_name + "_history")
-    return json_util.dumps(collection.find().limit(int(number)).sort("$natural", -1))
+    try:
+        num = int(number)
+    except ValueError:
+        abort(status.HTTP_400_BAD_REQUEST, "last field in url needs to be an integer")
+
+    return json_util.dumps(collection.find().limit(num).sort("$natural", -1))
 
 
 @statistics.route("/<algorithm_name>/total_accuracy", methods=["GET"])
