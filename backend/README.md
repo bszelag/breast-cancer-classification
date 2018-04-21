@@ -7,9 +7,11 @@ Avaible end-points:
   - http://0.0.0.0:5000/<alg_name/stats (GET)
   
   
-  - http://0.0.0.0:5000/<alg_name>/history/<num> (GET)
-  - http://0.0.0.0:5000/<alg_name>/total_accuracy (GET)
-  - http://0.0.0.0:5000/<alg_name>/total_accuracy/reset (GET)
+  - http://0.0.0.0:5000/stats/<alg_name> (GET)
+  - http://0.0.0.0:5000/stats/<alg_name>/history/<num> (GET)
+  - http://0.0.0.0:5000/stats/<alg_name>/total_accuracy (GET)
+  - http://0.0.0.0:5000/stats/<alg_name>/total_accuracy/reset (GET)
+  
   
 Example request in curl:
 
