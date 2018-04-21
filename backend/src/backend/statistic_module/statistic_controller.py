@@ -1,4 +1,4 @@
-from flask import Blueprint, request, abort, jsonify
+from flask import Blueprint, abort
 from src.backend import app, db
 import bson.json_util as json_util
 from flask_api import status
