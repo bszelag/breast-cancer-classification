@@ -1,6 +1,5 @@
-from pymongo.collection import Collection
 from src.backend import app, db
-from flask import Blueprint, request, abort, jsonify
+from flask import Blueprint, request, abort
 from flask_api import status
 import src.data_preparation.data_loader as dl
 import src.data_visualization.data_printer as dp
@@ -9,7 +8,6 @@ import src.classificators.svm as svm
 import src.classificators.decision_tree as tree
 import bson.json_util as json_util
 import datetime
-
 
 classificators = Blueprint('classificators', __name__)
 algorithms = {
@@ -64,7 +62,9 @@ def get_classification(algorithm_name):
                                        upsert=True)
 
     collection = db.get_collection(algorithm_name + "_history")
+    classifier_info = json_util.dumps(db.classifier_options.find({"_id": algorithm_name}))
     return_dict["time"] = datetime.datetime.utcnow()
+    return_dict["classifier_info"] = classifier_info
     collection.insert_one(return_dict)
 
     return json_util.dumps(return_dict), status.HTTP_200_OK
@@ -85,5 +85,10 @@ def train_model(algorithm_name):
 
     data, target, ids = dl.read_file(file)
     algorithms[algorithm_name].train_model(data, target)
-    return "", status.HTTP_200_OK
 
+    db.classifier_options.find_one_and_update({'_id': algorithm_name},
+                                              {"$set": {"_id": algorithm_name,
+                                                        "train_file_size": len(target)}},
+                                              upsert=True)
+
+    return "", status.HTTP_200_OK

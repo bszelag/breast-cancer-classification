@@ -13,8 +13,8 @@ client = MongoClient(app.config["DB_URL"],
 db = client[app.config["DB_NAME"]]
 
 from src.backend.dev_module.controller import dev_module
-
 app.register_blueprint(dev_module)
 from src.backend.classificators_module.classificators_controller import classificators
 app.register_blueprint(classificators)
 from src.backend.statistic_module.statistic_controller import statistics
+app.register_blueprint(statistics)
