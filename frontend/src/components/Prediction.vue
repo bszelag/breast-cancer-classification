@@ -21,16 +21,18 @@
       </b-card>
       <b-card v-if="results!=='-'" header="Results" header-bg-variant="info" header-text-variant="white" class="card">
         <div>
-          <h5>Accuracy</h5>
-          <b-row>
-            <b-col>false negative <b-badge pill variant="warning"> {{ results['accuracy']['fn'].toFixed(2) }}% </b-badge></b-col>
-            <b-col>false positive <b-badge pill variant="warning"> {{ results['accuracy']['fp'].toFixed(2) }}% </b-badge></b-col>
-            <b-col>true negative <b-badge pill variant="success"> {{ results['accuracy']['tn'].toFixed(2) }}% </b-badge></b-col>
-            <b-col>true positive <b-badge pill variant="success"> {{ results['accuracy']['tp'].toFixed(2) }}% </b-badge></b-col>
-          </b-row>
+          <div v-if="results['accuracy'] !== null">
+            <h5>Accuracy</h5>
+            <b-row>
+              <b-col>false negative <b-badge pill variant="warning"> {{ results['accuracy']['fn'].toFixed(2) }}% </b-badge></b-col>
+              <b-col>false positive <b-badge pill variant="warning"> {{ results['accuracy']['fp'].toFixed(2) }}% </b-badge></b-col>
+              <b-col>true negative <b-badge pill variant="success"> {{ results['accuracy']['tn'].toFixed(2) }}% </b-badge></b-col>
+              <b-col>true positive <b-badge pill variant="success"> {{ results['accuracy']['tp'].toFixed(2) }}% </b-badge></b-col>
+            </b-row>
+          </div>
           <h5>Results</h5>
-          <div class="d-flex justify-content-between flex-wrap">
-            <div v-for="(k, v) in results['predicted_values']" v-bind:key="k" class="p-3">
+          <div class="d-flex justify-content-around flex-wrap">
+            <div v-for="(k, v) in results['predicted_values']" v-bind:key="v" class="p-3">
               <h6>{{ v }}</h6>
               <b-badge pill :variant="badgeType[k]"> {{ badgeText[k] }} </b-badge>
             </div>
