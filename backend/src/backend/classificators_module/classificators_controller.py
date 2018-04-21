@@ -74,11 +74,11 @@ def get_classification(algorithm_name):
 def train_model(algorithm_name):
     if algorithm_name not in algorithms:
         app.logger.error("Wrong algorithm name in url")
-        abort(status.HTTP_404_NOT_FOUND)
+        abort(status.HTTP_404_NOT_FOUND, "Wrong algorithm name in url")
 
     if not request.files:
         app.logger.error('Missing file')
-        abort(status.HTTP_400_BAD_REQUEST)
+        abort(status.HTTP_400_BAD_REQUEST, "Missing file")
 
     file = request.files['file'].read().decode('ascii')
     file = file.splitlines()
