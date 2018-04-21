@@ -4,3 +4,4 @@ scipy
 pandas
 Flask
 Flask-API
+flask-cors

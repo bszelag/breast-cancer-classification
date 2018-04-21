@@ -5,6 +5,7 @@
 # import src.classificators.decision_tree as tree
 
 from src.backend import app
+from flask_cors import CORS
 
 # # temp----------------------------------
 # data, target, ids = dl.read_file("data/train.data")
@@ -25,4 +26,5 @@ from src.backend import app
 # dp.print_confusion_matrix_from_data(predicted3, target)
 # # ----------------------------------
 
+CORS(app)
 app.run(host='0.0.0.0', port=5000, debug=True)
