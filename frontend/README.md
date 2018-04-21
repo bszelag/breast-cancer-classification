@@ -29,11 +29,11 @@ export BACKEND_URL='http://127.0.0.1'
 # backend port
 export BACKEND_PORT=5000
 
-(here are default values)
-
 # frontend url
 export HOST='localhost'
 
 # frontend port
 export PORT=8080
+
+Note: here are default values
 ```
