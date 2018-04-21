@@ -29,11 +29,11 @@
             <b-col>true positive <b-badge pill variant="success"> {{ results['accuracy']['tp'].toFixed(2) }}% </b-badge></b-col>
           </b-row>
           <h5>Results</h5>
-          <div class="d-flex align-items-between flex-wrap">
-            <h5 v-for="(k, v) in results['predicted_values']" v-bind:key="k" class="result">
-              {{ v }}
+          <div class="d-flex justify-content-between flex-wrap">
+            <div v-for="(k, v) in results['predicted_values']" v-bind:key="k" class="p-3">
+              <h6>{{ v }}</h6>
               <b-badge pill :variant="badgeType[k]"> {{ badgeText[k] }} </b-badge>
-            </h5>
+            </div>
           </div>
         </div>
       </b-card>
@@ -120,7 +120,7 @@ export default {
   .form-group {
     margin-bottom: 25px;
   }
-  h5.result {
+  .result {
     margin: 5px 20px;
   }
 </style>
