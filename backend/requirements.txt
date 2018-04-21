@@ -5,3 +5,4 @@ pandas
 Flask
 Flask-API
 flask-cors
+pymongo

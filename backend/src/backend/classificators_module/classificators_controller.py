@@ -1,4 +1,6 @@
-from src.backend import app
+from pymongo.collection import Collection
+
+from src.backend import app, db
 from flask import Blueprint, request, abort, jsonify
 from flask_api import status
 import src.data_preparation.data_loader as dl
@@ -6,11 +8,11 @@ import src.data_visualization.data_printer as dp
 import src.classificators.naive_bayes as nb
 import src.classificators.svm as svm
 import src.classificators.decision_tree as tree
+import bson.json_util as json_util
+import datetime
 
 
 classificators = Blueprint('classificators', __name__)
-training_in_progress = False
-
 algorithms = {
     "bayes": nb,
     "svm": svm,
@@ -47,9 +49,27 @@ def get_classification(algorithm_name):
 
     data, target, ids = dl.read_file(file, with_target)
     predicted = algorithms[algorithm_name].model.predict(data)
-    return_dict = {"accuracy": dp.get_classification_accuracy(predicted, target),
+    accuracy = dp.get_classification_accuracy(predicted, target, inPercent=False)
+    total = len(predicted)
+
+    return_dict = {"accuracy": {k: v*100/total for k, v in accuracy.items()},
                    "predicted_values": dp.match_ids_with_predicted_values(ids, predicted)}
-    return jsonify(return_dict)
+
+    if with_target:
+        collection = db.get_collection("total_accuracy")
+        collection.find_one_and_update({'_id': algorithm_name},
+                                       {'$inc': {'total': total,
+                                                  "tn": accuracy["tn"],
+                                                  "tp": accuracy["tp"],
+                                                  "fp": accuracy["fp"],
+                                                  "fn": accuracy["fn"]}},
+                                       upsert=True)
+
+    collection = db.get_collection(algorithm_name + "_history")
+    return_dict["time"] = datetime.datetime.utcnow()
+    collection.insert_one(return_dict)
+
+    return json_util.dumps(return_dict)
 
 
 @classificators.route('/<algorithm_name>/train', methods=['POST'])
