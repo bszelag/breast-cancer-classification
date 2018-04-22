@@ -1,5 +1,5 @@
 from src.backend import app, db
-from flask import Blueprint, request, abort
+from flask import Blueprint, request, abort, jsonify
 from flask_api import status
 import src.data_preparation.data_loader as dl
 import src.data_visualization.data_printer as dp
@@ -63,7 +63,7 @@ def get_classification(algorithm_name):
                                        upsert=True)
 
     collection = db.get_collection(algorithm_name + "_history")
-    classifier_info = json_util.dumps(db.classifier_options.find({"_id": algorithm_name}))
+    classifier_info = db.classifier_options.find_one({"_id": algorithm_name})
     return_dict["time"] = datetime.datetime.utcnow()
     return_dict["classifier_info"] = classifier_info
     collection.insert_one(return_dict)
