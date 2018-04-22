@@ -1,6 +1,5 @@
 from flask import Flask
 from pymongo import MongoClient
-from urllib.parse import quote_plus
 
 app = Flask(__name__)
 app.config.from_object('config')
