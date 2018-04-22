@@ -8,6 +8,7 @@ import src.classificators.svm as svm
 import src.classificators.decision_tree as tree
 import bson.json_util as json_util
 import datetime
+import pickle
 
 classificators = Blueprint('classificators', __name__)
 algorithms = {
@@ -90,5 +91,9 @@ def train_model(algorithm_name):
                                               {"$set": {"_id": algorithm_name,
                                                         "train_file_size": len(target)}},
                                               upsert=True)
+
+    db.models.find_one_and_update({'_id': algorithm_name},
+                                  {"$set": {"pickle": pickle.dumps(algorithms[algorithm_name].model)}},
+                                  upsert=True)
 
     return "", status.HTTP_200_OK
