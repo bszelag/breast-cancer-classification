@@ -8,7 +8,7 @@ def match_ids_with_predicted_values(ids, predicted, mapper=lambda x: 1 if x == 4
     return dict(zip(ids, predicted))
 
 
-def get_classification_accuracy(predicted_values, true_values, mapper=lambda x: 1 if x == 4 else 0):
+def get_classification_accuracy(predicted_values, true_values, mapper=lambda x: 1 if x == 4 else 0, inPercent=True):
 
     if true_values is None:
         return
@@ -35,10 +35,12 @@ def get_classification_accuracy(predicted_values, true_values, mapper=lambda x: 
             fp += 1
 
     num_of_samples = tp + fp + tn + fn
-    tp = tp/num_of_samples * 100
-    fp = fp/num_of_samples * 100
-    tn = tn/num_of_samples * 100
-    fn = fn/num_of_samples * 100
+
+    if inPercent:
+        tp = tp/num_of_samples * 100
+        fp = fp/num_of_samples * 100
+        tn = tn/num_of_samples * 100
+        fn = fn/num_of_samples * 100
 
     return {"tp": tp, "fp": fp, "tn": tn, "fn": fn}
 
