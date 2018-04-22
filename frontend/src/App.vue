@@ -30,6 +30,10 @@ Vue.prototype.$http = axios.create({
   headers: {'Content-type': 'application/json'}
 })
 
+Vue.prototype.$statsBayesHistory = 'stats/bayes/history'
+Vue.prototype.$statsSVMHistory = 'stats/svm/history'
+Vue.prototype.$statsTreeHistory = 'stats/tree/history'
+
 export default {
   name: 'App',
   components: {
