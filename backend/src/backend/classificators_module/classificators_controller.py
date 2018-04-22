@@ -22,14 +22,14 @@ def get_classification(algorithm_name):
     if algorithm_name not in algorithms:
         app.logger.error("Wrong algorithm name in url")
         abort(status.HTTP_404_NOT_FOUND, "Wrong algorithm name in url")
+        
+    if not request.files:
+        app.logger.error('Missing file')
+        abort(status.HTTP_400_BAD_REQUEST, "Missing file")
 
     if "with_target" not in request.form:
         app.logger.error('Missing target info')
         abort(status.HTTP_400_BAD_REQUEST, "Missing target info")
-
-    if not request.files:
-        app.logger.error('Missing file')
-        abort(status.HTTP_400_BAD_REQUEST, "Missing file")
 
     if algorithms[algorithm_name].model is None:
         app.logger.info("Model not trained yet")
