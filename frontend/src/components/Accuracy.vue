@@ -3,7 +3,7 @@ import { Pie } from 'vue-chartjs'
 
 export default {
   name: 'Accuracy',
-  props: ['data', 'prep'],
+  props: ['data'],
   data () {
     return {
       acc: null
@@ -12,18 +12,6 @@ export default {
   extends: Pie,
   methods: {
     prepareAccuracyChart: function () {
-      if (this.prep) {
-        this.acc = []
-        for (var a in this.data) {
-          this.acc.push({
-            'fn': this.data[a].fn,
-            'tp': this.data[a].tp,
-            'fp': this.data[a].fp,
-            'tn': this.data[a].tn
-          })
-        }
-        console.log('ACC = ' + this.acc)
-      }
       var keys = []
       var values = []
       var labels = {

@@ -1,6 +1,6 @@
 <template>
   <b-container class="bg-light statsTable">
-    <!--<TotalAccuracy :accuracy="accuracy"></TotalAccuracy>-->
+    <TotalAccuracy :accuracy="accuracy"></TotalAccuracy>
     <b-form-group class="filter">
       <b-form-checkbox-group v-model="filter" buttons button-variant="outline-info" size="sm">
         <b-form-checkbox value='bayes'>Naive Bayes</b-form-checkbox>
@@ -58,7 +58,18 @@ export default {
     getTotalAccuracy: async function (endpoint) {
       try {
         const response = await this.$http.get(endpoint)
-        this.accuracy.push(response.data)
+        for (var d in response.data) {
+          this.accuracy.push({
+            'id': response.data[d]['_id'],
+            'values': {
+              'fn': response.data[d]['fn'] / response.data[d]['total'] * 100,
+              'tp': response.data[d]['tp'] / response.data[d]['total'] * 100,
+              'fp': response.data[d]['fp'] / response.data[d]['total'] * 100,
+              'tn': response.data[d]['tn'] / response.data[d]['total'] * 100
+            }
+          })
+        }
+        console.log('stats acc - ' + this.accuracy)
       } catch (err) {
         console.log(err)
       }

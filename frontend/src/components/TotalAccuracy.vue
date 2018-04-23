@@ -1,7 +1,8 @@
 <template>
-  <div class="flex flex-nowrap justify-content-around">
-    <div v-for="item in items" v-bind:key="item">
-      <accuracy :data="item" prep=True></accuracy>
+  <div class="d-flex flex-nowrap justify-content-around">
+    <div class="w-25 d-line-flex" v-for="(item, index) in items" :key="index">
+      {{ classificationOptions[item['id']] + ' (%) ' }}
+      <accuracy :data="item['values']"></accuracy>
     </div>
   </div>
 </template>
@@ -17,7 +18,12 @@ export default {
   },
   data () {
     return {
-      items: []
+      items: [],
+      classificationOptions: {
+        'bayes': 'Naive Bayes',
+        'tree': 'Decision Tree',
+        'svm': 'SVM'
+      }
     }
   },
   mounted: function () {
@@ -26,15 +32,6 @@ export default {
   watch: {
     accuracy: function () {
       this.items = this.accuracy
-      //      for (var a in this.accuracy) {
-      //        this.items.push({
-      //          'fn': this.accuracy[a].fn,
-      //          'tp': this.accuracy[a].tp,
-      //          'fp': this.accuracy[a].fp,
-      //          'tn': this.accuracy[a].tn
-      //        })
-      //      }
-      console.log(this.items)
     }
   }
 }
