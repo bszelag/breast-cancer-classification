@@ -64,8 +64,8 @@ export default {
             'values': {
               'fn': response.data[d]['fn'] / response.data[d]['total'] * 100,
               'tp': response.data[d]['tp'] / response.data[d]['total'] * 100,
-              'fp': response.data[d]['fp'] / response.data[d]['total'] * 100,
-              'tn': response.data[d]['tn'] / response.data[d]['total'] * 100
+              'tn': response.data[d]['tn'] / response.data[d]['total'] * 100,
+              'fp': response.data[d]['fp'] / response.data[d]['total'] * 100
             }
           })
         }
