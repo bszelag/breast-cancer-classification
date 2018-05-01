@@ -1,15 +1,13 @@
 <template>
-  <div>
-    <b-table hover :items="samples" :fields="fields" head-variant="light">
-      <template slot="more" slot-scope="data">
-        <button size="sm" class="more" @click.stop="data.toggleDetails"><font-awesome-icon :icon="more" /></button>
-      </template>
-      <template slot="row-details" slot-scope="data">
-        <Results :results="data['item']"></Results>
-        <button class="hide" @click="data.toggleDetails"><font-awesome-icon class="more" :icon="hide" /></button>
-      </template>
-    </b-table>
-  </div>
+  <b-table hover :items="items" :fields="fields" head-variant="light">
+    <template slot="more" slot-scope="data">
+      <button size="sm" class="more" @click.stop="data.toggleDetails"><font-awesome-icon :icon="more" /></button>
+    </template>
+    <template slot="row-details" slot-scope="data">
+      <Results :results="data['item']"></Results>
+      <button class="hide" @click="data.toggleDetails"><font-awesome-icon class="more" :icon="hide" /></button>
+    </template>
+  </b-table>
 </template>
 
 <script>
@@ -19,7 +17,7 @@ import Results from './Results.vue'
 
 export default {
   name: 'History',
-  props: ['hist'],
+  props: ['samples'],
   components: {
     // eslint-disable-next-line
     FontAwesomeIcon,
@@ -35,26 +33,24 @@ export default {
   },
   data () {
     return {
-      samples: [],
+      items: [],
       fields: [
         {key: 'time.$date', sortable: true, formatter: (value, key, item) => { return (new Date(value)).toLocaleString() }, label: 'Date (UTC)'},
-        //        {key: 'classifier_info.id', label: 'Algorithm', sortable: true},
-        //        {key: 'classifier_info.size', label: 'Size', sortable: true},
-        {key: 'accuracy.tp', sortable: true},
+        {key: 'algorithm', label: 'Algorithm', sortable: true},
+        {key: 'size', label: 'Train File Size', sortable: true},
+        {key: 'samples', label: 'Number of Samples', sortable: true},
         {key: 'more'}
       ]
     }
   },
   mounted: function () {
-    for (var d in this.hist) {
-      this.samples.push({
-        'accuracy': this.hist[d].accuracy,
-        'classifier_info': this.hist[d].classifier_info,
-        'predicted_values': this.hist[d].predicted_values,
-        'time': this.hist[d].time
-      })
+    this.items = this.samples
+  },
+  watch: {
+    samples: function () {
+      this.items = this.samples
+      console.log('watch')
     }
-    console.log('samples = ' + this.samples)
   }
 }
 </script>

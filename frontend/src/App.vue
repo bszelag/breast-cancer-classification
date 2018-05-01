@@ -30,9 +30,12 @@ Vue.prototype.$http = axios.create({
   headers: {'Content-type': 'application/json'}
 })
 
-Vue.prototype.$statsBayesHistory = 'stats/bayes/history'
-Vue.prototype.$statsSVMHistory = 'stats/svm/history'
-Vue.prototype.$statsTreeHistory = 'stats/tree/history'
+Vue.prototype.$statsBayes = 'stats/bayes/'
+Vue.prototype.$statsSVM = 'stats/svm/'
+Vue.prototype.$statsTree = 'stats/tree/'
+
+Vue.prototype.$historyEndpoint = 'history'
+Vue.prototype.$accuracyEndpoint = 'total_accuracy'
 
 export default {
   name: 'App',
@@ -73,5 +76,9 @@ export default {
   padding: 1rem;
   left: 0px;
   right: 0px;
+}
+.container-class {
+  padding: 20px;
+  margin-top: 25px;
 }
 </style>
