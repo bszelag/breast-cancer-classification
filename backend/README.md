@@ -13,6 +13,6 @@ Avaible end-points:
   
 Example request in curl:
 
- - `curl -F 'file=@./train.data' http://0.0.0.0:5000/bayes/train`
+ - `curl -F 'file=@./train.data' http://0.0.0.0:5000/bayes/train -F options='{"dist": "MultinominalNB"}' 0.0.0.0:5000/bayes/predict`
  - `curl -X POST -F "file=@./test.data" -F "with_target=true" 0.0.0.0:5000/bayes/predict`
  - `curl http://0.0.0.0:5000/bayes/history/2` (returns maximum 2 last records)
