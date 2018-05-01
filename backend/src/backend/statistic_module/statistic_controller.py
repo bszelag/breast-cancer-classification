@@ -8,7 +8,7 @@ statistics = Blueprint("statistics", __name__, url_prefix='/stats')
 
 @statistics.route("/<algorithm_name>")
 def get_options(algorithm_name):
-    return json_util.dumps(db.classifier_options.find_one({'_id': algorithm_name}))
+    return json_util.dumps(db.classifier_info.find_one({'_id': algorithm_name}))
 
 
 @statistics.route("/<algorithm_name>/history/<number>", methods=["GET"])

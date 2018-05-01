@@ -1,4 +1,5 @@
 import numpy as np
+from sklearn.feature_selection import SelectKBest, chi2
 
 
 def read_file(file, with_target=True):
@@ -21,3 +22,11 @@ def read_file(file, with_target=True):
         data = np.delete(data, np.s_[-1], axis=1)
 
     return data, target, ids
+
+
+def feature_selection(data, target):
+
+    new_data = SelectKBest(chi2, k=5).fit(data, target)
+    mask_selected = new_data.get_support()
+    new_data = new_data.transform(data)
+    return new_data, mask_selected
