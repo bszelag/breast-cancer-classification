@@ -16,6 +16,10 @@
           </div>
         </div>
       </div>
+      <div class="results-part" v-if="results['options'] !== undefined">
+        <h5>Options</h5>
+        {{ results['options'] }}
+      </div>
       <h5>Results</h5>
       <div class="d-flex justify-content-around flex-wrap">
         <div v-for="(k, v) in results['predicted_values']" v-bind:key="v" class="p-3">

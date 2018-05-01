@@ -48,7 +48,8 @@ export default {
             'size': response.data[d].classifier_info['train_file_size'],
             'predicted_values': response.data[d].predicted_values,
             'time': response.data[d].time,
-            'samples': Object.keys(response.data[d].predicted_values).length
+            'samples': Object.keys(response.data[d].predicted_values).length,
+            'options': response.data[d].options
           })
         }
       } catch (err) {

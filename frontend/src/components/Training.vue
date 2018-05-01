@@ -4,18 +4,47 @@
       <b-card header="Train new classificator" header-bg-variant="info" header-text-variant="white" class="card">
         <b-form @submit="onSubmit" @reset="onReset" class="form">
           <b-form-group label="Classification" label-for="classification" description="Choose classification algorithm">
-            <b-form-radio-group required id="radios" v-model="form.classification" :options="classificationOptions">
+            <b-form-radio-group required id="radios" v-model="form.classification" :options="classificationOptions" @change="algChanged">
             </b-form-radio-group>
           </b-form-group>
-          <b-form-group label="Options" label-for="args.options" description="Additional options">
             <div v-if="form.classification === 'bayes'">
-              <b-form-radio-group id="bayesOptions" v-model="form.args.options['dist']" :options="distOptions">
-              </b-form-radio-group>
-              {{ form.args.options ? form.args.options : 'nuuuu' }}
+              <b-form-group label="Distribution" description="Type of distribution used in Naive Bayes classificator">
+                <b-form-radio-group id="bayesOptions" v-model="form.args.options['dist']" :options="distOptions">
+                </b-form-radio-group>
+              </b-form-group>
             </div>
-            <div v-if="form.classification === 'svm'">svm opt</div>
-            <div v-if="form.classification === 'tree'">tree opt</div>
-          </b-form-group>
+            <div v-if="form.classification === 'svm'">
+              <b-form-group label="Kernel" description="">
+                <b-form-radio-group id="kernelOptions" v-model="form.args.options['kernel']" :options="kernelOptions">
+                </b-form-radio-group>
+              </b-form-group>
+              <b-form-group label="C" description="">
+                <b-form-radio-group id="cOptions" v-model="form.args.options['C']" :options="cOptions">
+                </b-form-radio-group>
+              </b-form-group>
+              <b-form-group label="Gamma" description="Available only for rbf/poly/singoid kernel">
+                <b-form-radio-group id="gammaOptions"
+                                    v-model="form.args.options['gamma']"
+                                    :options="gammaOptions"
+                                    v-if="form.args.options['kernel'] === 'rbf' || form.args.options['kernel'] === 'poly' || form.args.options['kernel'] === 'signoid'"
+                ></b-form-radio-group>
+              </b-form-group>
+            </div>
+            <div v-if="form.classification === 'tree'">
+              <b-form-group label="Criterion" description="">
+                <b-form-radio-group id="criterionOptions" v-model="form.args.options['criterion']" :options="criterionOptions">
+                </b-form-radio-group>
+              </b-form-group>
+              <b-form-group label="Splitter" description="">
+                <b-form-radio-group id="splitterOptions" v-model="form.args.options['splitter']" :options="splitterOptions">
+                </b-form-radio-group>
+              </b-form-group>
+              <b-form-group label="Minimal split of samples" description="Minimal value - 2">
+                <b-form-input id="minSamplesSplitOptions" v-model="form.args.options['min_samples_split']" type="number" value="2">
+                </b-form-input>
+              </b-form-group>
+            </div>
+            {{ form.args.options }}
           <b-form-group label="Training data" label-for="file" description="Select training data">
             <b-form-file ref="fileinput" required v-model="form.file" :state="Boolean(form.file)" placeholder="Choose a file..."></b-form-file>
             <div class="mt-3">Selected file: {{form.file && form.file.name}}</div>
@@ -48,7 +77,7 @@ export default {
       argsOptions: {
         'bayes': {'dist': null},
         'svm': {'kernel': null, 'C': null, 'gamma': null},
-        'tree': {'criterion': null, 'min_samples_split': null, 'splitter': null}
+        'tree': {'criterion': null, 'min_samples_split': 2, 'splitter': null}
       },
       distOptions: [
         {text: 'Gaussian Naive Bayes', value: 'GaussianNB'},
@@ -83,6 +112,9 @@ export default {
     }
   },
   methods: {
+    algChanged (checked) {
+      this.form.args.options = {}
+    },
     onSubmit (evt) {
       evt.preventDefault()
       this.submit()
@@ -101,6 +133,7 @@ export default {
       let endpoint = this.form.classification + '/train'
       let formData = new FormData()
       formData.append('file', this.form.file)
+      formData.append('options', this.form.args.options)
       this.$http.post(endpoint, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
