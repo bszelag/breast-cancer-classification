@@ -110,7 +110,8 @@ def train_model(algorithm_name):
     db.classifier_info.find_one_and_update({'_id': algorithm_name},
                                            {"$set": {"_id": algorithm_name,
                                                      "train_file_size": len(target),
-                                                     "options:": options}},
+                                                     "options:": options,
+                                                     "with_selection": with_selection}},
                                            upsert=True)
 
     db.models.find_one_and_update({'_id': algorithm_name},
