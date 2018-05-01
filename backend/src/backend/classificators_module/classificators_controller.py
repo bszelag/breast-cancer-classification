@@ -36,16 +36,13 @@ def get_classification(algorithm_name):
         app.logger.info("Model not trained yet")
         abort(status.HTTP_406_NOT_ACCEPTABLE, "Model not trained yet")
 
-    if request.form['with_target'] in ['true', 'True', 1]:
-        with_target = True
-    else:
-        with_target = False
+    with_target = string_match_true(request.form["with_target"])
 
     file = request.files['file'].read().decode('ascii')
     file = file.splitlines()
 
     data, target, ids = dl.read_file(file, with_target)
-    predicted = algorithms[algorithm_name].model.predict(data)
+    predicted = algorithms[algorithm_name].predict(data)
     accuracy = dp.get_classification_accuracy(predicted, target, inPercent=False)
     total = len(predicted)
 
@@ -87,6 +84,12 @@ def train_model(algorithm_name):
         options = json_util.loads(request.form["options"])
         options = {k: v for k, v in options.items() if v}
 
+    if "with_selection" not in request.form:
+        app.logger.error('Missing selection info')
+        with_selection = False
+    else:
+        with_selection = string_match_true(request.form["with_selection"])
+
     app.logger.info("Passed options: {}".format(options))
 
     file = request.files['file'].read().decode('ascii')
@@ -94,8 +97,12 @@ def train_model(algorithm_name):
 
     data, target, ids = dl.read_file(file)
 
+    mask = None
+    if with_selection:
+        data, mask = dl.feature_selection(data, target)
+
     try:
-        algorithms[algorithm_name].train_model(data, target, **options)
+        algorithms[algorithm_name].train_model(data, target, mask, **options)
     except TypeError as e:
         app.logger.error(e)
         abort(status.HTTP_400_BAD_REQUEST, e)
@@ -103,11 +110,17 @@ def train_model(algorithm_name):
     db.classifier_info.find_one_and_update({'_id': algorithm_name},
                                            {"$set": {"_id": algorithm_name,
                                                      "train_file_size": len(target),
-                                                     "options:": options}},
+                                                     "options:": options,
+                                                     "with_selection": with_selection}},
                                            upsert=True)
 
     db.models.find_one_and_update({'_id': algorithm_name},
-                                  {"$set": {"pickle": pickle.dumps(algorithms[algorithm_name].model)}},
+                                  {"$set": {"pickle": pickle.dumps(algorithms[algorithm_name].model),
+                                            "mask": algorithms[algorithm_name].mask_}},
                                   upsert=True)
 
     return "", status.HTTP_200_OK
+
+
+def string_match_true(value):
+    return value in ['true', 'True', 1]

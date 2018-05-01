@@ -6,4 +6,5 @@ for k in algorithms:
     record = db.models.find_one({"_id": k})
     if record is not None:
         algorithms[k].model = pickle.loads(record["pickle"])
-
+        if "mask" in record:
+            algorithms[k].mask_ = record["mask"]
