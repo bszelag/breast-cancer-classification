@@ -77,4 +77,8 @@ export default {
   left: 0px;
   right: 0px;
 }
+.container-class {
+  padding: 20px;
+  margin-top: 25px;
+}
 </style>

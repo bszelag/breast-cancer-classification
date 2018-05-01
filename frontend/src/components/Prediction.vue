@@ -1,27 +1,29 @@
 <template>
-  <div class="d-flex justify-content-center">
-    <b-card-group deck style="width: 80%">
-      <b-card header="Classification" header-bg-variant="info" header-text-variant="white" class="card">
-        <b-form @submit="onSubmit" @reset="onReset" class="form">
-          <b-form-group class="form-group" label="Classification" label-for="classification" description="Choose classification algorithm">
-            <b-form-radio-group required id="radios" v-model="form.classification" :options="classificationOptions">
-            </b-form-radio-group>
-          </b-form-group>
-          <b-form-group class="form-group" label="Data" label-for="file" description="Select data">
-            <b-form-file ref="fileinput" required v-model="form.file" :state="Boolean(form.file)" placeholder="Choose a file..."></b-form-file>
-            <div class="mt-3">Selected file: {{form.file && form.file.name}}</div>
-          </b-form-group>
-          <b-form-group class="form-group" label="Labels" label-for="target" description="Are there labels in your data?">
-            <b-form-radio-group required id="radios-targets" v-model="form.target" :options="targetOptions">
-            </b-form-radio-group>
-          </b-form-group>
-          <b-button type="submit" variant="success">Classify</b-button>
-          <b-button type="reset" variant="secondary">Reset</b-button>
-        </b-form>
-      </b-card>
-      <Results :results="results"></Results>
-    </b-card-group>
-  </div>
+  <b-container class="bg-light container-class">
+    <div class="d-flex justify-content-center">
+      <b-card-group deck>
+        <b-card header="Classification" header-bg-variant="info" header-text-variant="white" class="card">
+          <b-form @submit="onSubmit" @reset="onReset" class="form">
+            <b-form-group class="form-group" label="Classification" label-for="classification" description="Choose classification algorithm">
+              <b-form-radio-group required id="radios" v-model="form.classification" :options="classificationOptions">
+              </b-form-radio-group>
+            </b-form-group>
+            <b-form-group class="form-group" label="Data" label-for="file" description="Select data">
+              <b-form-file ref="fileinput" required v-model="form.file" :state="Boolean(form.file)" placeholder="Choose a file..."></b-form-file>
+              <div class="mt-3">Selected file: {{form.file && form.file.name}}</div>
+            </b-form-group>
+            <b-form-group class="form-group" label="Labels" label-for="target" description="Are there any labels in your data?">
+              <b-form-radio-group required id="radios-targets" v-model="form.target" :options="targetOptions">
+              </b-form-radio-group>
+            </b-form-group>
+            <b-button type="submit" variant="success">Classify</b-button>
+            <b-button type="reset" variant="secondary">Reset</b-button>
+          </b-form>
+        </b-card>
+        <Results :results="results"></Results>
+      </b-card-group>
+    </div>
+  </b-container>
 </template>
 
 <script>
@@ -86,6 +88,7 @@ export default {
         }
       } catch (err) {
         console.log(err)
+        alert('Error: ' + err)
       }
     }
   }
