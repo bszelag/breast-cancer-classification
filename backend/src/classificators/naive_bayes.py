@@ -1,12 +1,15 @@
 from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import MultinomialNB
 
 model = None
 
 
-# TODO: make naive_bayes configurable
-def train_model(data, target):
+def train_model(data, target, **kwargs):
     global model
-    model = GaussianNB()
+
+    if model is not None and kwargs["dist"] == "MultinominalNB":
+        model = MultinomialNB()
+    else:
+        model = GaussianNB()
+
     model.fit(data, target)
-
-

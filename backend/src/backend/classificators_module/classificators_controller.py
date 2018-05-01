@@ -81,11 +81,25 @@ def train_model(algorithm_name):
         app.logger.error('Missing file')
         abort(status.HTTP_400_BAD_REQUEST, "Missing file")
 
+    if "options" not in request.form:
+        options = {}
+    else:
+        options = json_util.loads(request.form["options"])
+        options = {k: v for k, v in options.items() if v}
+
+    app.logger.info("Passed options: {}".format(options))
+
     file = request.files['file'].read().decode('ascii')
     file = file.splitlines()
 
     data, target, ids = dl.read_file(file)
-    algorithms[algorithm_name].train_model(data, target)
+
+    try:
+        algorithms[algorithm_name].train_model(data, target, **options)
+    except TypeError as e:
+        app.logger.error(e)
+        abort(status.HTTP_400_BAD_REQUEST, e)
+
 
     db.classifier_options.find_one_and_update({'_id': algorithm_name},
                                               {"$set": {"_id": algorithm_name,

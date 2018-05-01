@@ -3,8 +3,7 @@ from sklearn import tree
 model = None
 
 
-# TODO: make this configurable
-def train_model(data, target):
+def train_model(data, target, **kwargs):
     global model
-    model = tree.DecisionTreeClassifier()
+    model = tree.DecisionTreeClassifier(**kwargs)
     model.fit(data, target)
