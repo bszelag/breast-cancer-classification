@@ -3,8 +3,7 @@ from sklearn import svm
 model = None
 
 
-# TODO: make svm configurable
-def train_model(data, target):
+def train_model(data, target, **kwargs):
     global model
-    model = svm.SVC()
+    model = svm.SVC(**kwargs)
     model.fit(data, target)

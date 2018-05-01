@@ -23,7 +23,7 @@ def get_classification(algorithm_name):
     if algorithm_name not in algorithms:
         app.logger.error("Wrong algorithm name in url")
         abort(status.HTTP_404_NOT_FOUND, "Wrong algorithm name in url")
-        
+
     if not request.files:
         app.logger.error('Missing file')
         abort(status.HTTP_400_BAD_REQUEST, "Missing file")
@@ -63,7 +63,7 @@ def get_classification(algorithm_name):
                                        upsert=True)
 
     collection = db.get_collection(algorithm_name + "_history")
-    classifier_info = db.classifier_options.find_one({"_id": algorithm_name})
+    classifier_info = db.classifier_info.find_one({"_id": algorithm_name})
     return_dict["time"] = datetime.datetime.utcnow()
     return_dict["classifier_info"] = classifier_info
     collection.insert_one(return_dict)
@@ -81,16 +81,30 @@ def train_model(algorithm_name):
         app.logger.error('Missing file')
         abort(status.HTTP_400_BAD_REQUEST, "Missing file")
 
+    if "options" not in request.form:
+        options = {}
+    else:
+        options = json_util.loads(request.form["options"])
+        options = {k: v for k, v in options.items() if v}
+
+    app.logger.info("Passed options: {}".format(options))
+
     file = request.files['file'].read().decode('ascii')
     file = file.splitlines()
 
     data, target, ids = dl.read_file(file)
-    algorithms[algorithm_name].train_model(data, target)
 
-    db.classifier_options.find_one_and_update({'_id': algorithm_name},
-                                              {"$set": {"_id": algorithm_name,
-                                                        "train_file_size": len(target)}},
-                                              upsert=True)
+    try:
+        algorithms[algorithm_name].train_model(data, target, **options)
+    except TypeError as e:
+        app.logger.error(e)
+        abort(status.HTTP_400_BAD_REQUEST, e)
+
+    db.classifier_info.find_one_and_update({'_id': algorithm_name},
+                                           {"$set": {"_id": algorithm_name,
+                                                     "train_file_size": len(target),
+                                                     "options:": options}},
+                                           upsert=True)
 
     db.models.find_one_and_update({'_id': algorithm_name},
                                   {"$set": {"pickle": pickle.dumps(algorithms[algorithm_name].model)}},
