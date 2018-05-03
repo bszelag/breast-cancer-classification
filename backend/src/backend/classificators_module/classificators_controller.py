@@ -7,8 +7,10 @@ import src.classificators.naive_bayes as nb
 import src.classificators.svm as svm
 import src.classificators.decision_tree as tree
 import bson.json_util as json_util
+import bson
 import datetime
 import pickle
+import json
 
 classificators = Blueprint('classificators', __name__)
 algorithms = {
@@ -90,7 +92,7 @@ def train_model(algorithm_name):
     else:
         with_selection = string_match_true(request.form["with_selection"])
 
-    app.logger.info("Passed options: {}".format(options))
+    app.logger.info("Passed options: {}, {}".format(options, with_selection))
 
     file = request.files['file'].read().decode('ascii')
     file = file.splitlines()
@@ -107,6 +109,9 @@ def train_model(algorithm_name):
         app.logger.error(e)
         abort(status.HTTP_400_BAD_REQUEST, e)
 
+    if mask is not None:
+        mask = mask.tolist()
+
     db.classifier_info.find_one_and_update({'_id': algorithm_name},
                                            {"$set": {"_id": algorithm_name,
                                                      "train_file_size": len(target),
@@ -116,7 +121,7 @@ def train_model(algorithm_name):
 
     db.models.find_one_and_update({'_id': algorithm_name},
                                   {"$set": {"pickle": pickle.dumps(algorithms[algorithm_name].model),
-                                            "mask": algorithms[algorithm_name].mask_}},
+                                            "mask":         json_util.dumps(mask)}},
                                   upsert=True)
 
     return "", status.HTTP_200_OK
