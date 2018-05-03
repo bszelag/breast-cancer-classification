@@ -49,9 +49,10 @@ export default {
             'predicted_values': response.data[d].predicted_values,
             'time': response.data[d].time,
             'samples': Object.keys(response.data[d].predicted_values).length,
-            'options': response.data[d].options
+            'classifier_info': response.data[d].classifier_info
           })
         }
+        console.log(this.samples)
       } catch (err) {
         console.log(err)
       }

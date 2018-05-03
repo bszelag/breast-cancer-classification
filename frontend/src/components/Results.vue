@@ -16,9 +16,11 @@
           </div>
         </div>
       </div>
-      <div class="results-part" v-if="results['options'] !== undefined">
+      <div class="results-part" >
         <h5>Options</h5>
-        {{ results['options'] }}
+        <h6 v-for="(o, i, a) in results['classifier_info']" v-bind:key="a" v-if="a===1">
+          {{ JSON.stringify(o) }}
+        </h6>
       </div>
       <h5>Results</h5>
       <div class="d-flex justify-content-around flex-wrap">

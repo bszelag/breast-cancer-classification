@@ -22,7 +22,7 @@
                 <b-form-radio-group id="cOptions" v-model="form.args.options['C']" :options="cOptions">
                 </b-form-radio-group>
               </b-form-group>
-              <b-form-group label="Gamma" description="Available only for rbf/poly/singoid kernel">
+              <b-form-group label="Gamma" description="Available only for rbf/poly/sigmoid kernel">
                 <b-form-radio-group id="gammaOptions"
                                     v-model="form.args.options['gamma']"
                                     :options="gammaOptions"
@@ -40,15 +40,15 @@
                 </b-form-radio-group>
               </b-form-group>
               <b-form-group label="Minimal split of samples" description="Minimal value - 2">
-                <b-form-input id="minSamplesSplitOptions" v-model="form.args.options['min_samples_split']" type="number" value="2">
+                <b-form-input id="minSamplesSplitOptions" v-model="form.args.options['min_samples_split']" type="number">
                 </b-form-input>
               </b-form-group>
             </div>
-            {{ form.args.options }}
           <b-form-group label="Training data" label-for="file" description="Select training data">
             <b-form-file ref="fileinput" required v-model="form.file" :state="Boolean(form.file)" placeholder="Choose a file..."></b-form-file>
             <div class="mt-3">Selected file: {{form.file && form.file.name}}</div>
           </b-form-group>
+          <b-form-checkbox id="checkbox" v-model="form.selection" value="true" onchecked-value="false">Use feature selection</b-form-checkbox>
           <b-button type="submit" variant="success">Train</b-button>
           <b-button type="reset" variant="secondary">Reset</b-button>
         </b-form>
@@ -67,7 +67,8 @@ export default {
         args: {
           options: {}
         },
-        file: null
+        file: null,
+        selection: ''
       },
       classificationOptions: [
         {text: 'Naive Bayes', value: 'bayes'},
@@ -87,13 +88,12 @@ export default {
         {text: 'Linear', value: 'linear'},
         {text: 'Poly', value: 'poly'},
         {text: 'RBF', value: 'rbf'},
-        {text: 'Signoid', value: 'signoid'},
-        {text: 'Precomputed', value: 'precomputed'}
+        {text: 'Sigmoid', value: 'sigmoid'}
       ],
       cOptions: [
-        {text: '10', value: 10},
-        {text: '100', value: 100},
-        {text: '1000', value: 1000}
+        {text: '10', value: 10.0},
+        {text: '100', value: 100.0},
+        {text: '1000', value: 1000.0}
       ],
       gammaOptions: [
         {text: '0.1', value: 0.1},
@@ -130,10 +130,14 @@ export default {
       this.$nextTick(() => { this.show = true })
     },
     submit: function () {
+      if (this.form.args.options['min_samples_split'] !== undefined) {
+        this.form.args.options['min_samples_split'] = parseFloat(this.form.args.options['min_samples_split'])
+      }
       let endpoint = this.form.classification + '/train'
       let formData = new FormData()
       formData.append('file', this.form.file)
-      formData.append('options', this.form.args.options)
+      formData.append('options', JSON.stringify(this.form.args.options))
+      formData.append('with_selection', this.form.selection)
       this.$http.post(endpoint, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
