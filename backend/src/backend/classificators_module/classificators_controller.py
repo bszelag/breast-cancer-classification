@@ -122,7 +122,7 @@ def train_model(algorithm_name):
                                                      "train_file_size": len(target),
                                                      "options:": options,
                                                      "with_selection": with_selection,
-                                                     "training time": time_stop - time_start}},
+                                                     "training_time": time_stop - time_start}},
                                            upsert=True)
 
     db.models.find_one_and_update({'_id': algorithm_name},
