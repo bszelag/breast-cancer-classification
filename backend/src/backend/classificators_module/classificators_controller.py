@@ -117,11 +117,11 @@ def train_model(algorithm_name):
     if mask is not None:
         mask = mask.tolist()
 
+    options["with_selection"] = with_selection
     db.classifier_info.find_one_and_update({'_id': algorithm_name},
                                            {"$set": {"_id": algorithm_name,
                                                      "train_file_size": len(target),
                                                      "options:": options,
-                                                     "with_selection": with_selection,
                                                      "training_time": time_stop - time_start}},
                                            upsert=True)
 
