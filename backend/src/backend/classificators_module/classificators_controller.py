@@ -1,5 +1,5 @@
 from src.backend import app, db
-from flask import Blueprint, request, abort, jsonify
+from flask import Blueprint, request, abort
 from flask_api import status
 import src.data_preparation.data_loader as dl
 import src.data_visualization.data_printer as dp
@@ -9,6 +9,7 @@ import src.classificators.decision_tree as tree
 import bson.json_util as json_util
 import datetime
 import pickle
+import time
 
 classificators = Blueprint('classificators', __name__)
 algorithms = {
@@ -90,7 +91,7 @@ def train_model(algorithm_name):
     else:
         with_selection = string_match_true(request.form["with_selection"])
 
-    app.logger.info("Passed options: {}".format(options))
+    app.logger.info("Passed options: {}, {}".format(options, with_selection))
 
     file = request.files['file'].read().decode('ascii')
     file = file.splitlines()
@@ -101,22 +102,32 @@ def train_model(algorithm_name):
     if with_selection:
         data, mask = dl.feature_selection(data, target)
 
+    time_start, time_stop = None, None
+
     try:
+        app.logger.info("Model in training")
+        time_start = time.time()
         algorithms[algorithm_name].train_model(data, target, mask, **options)
+        time_stop = time.time()
+        app.logger.info("Model trained - elapsed time {}".format(time_stop - time_start))
     except TypeError as e:
         app.logger.error(e)
         abort(status.HTTP_400_BAD_REQUEST, e)
 
+    if mask is not None:
+        mask = mask.tolist()
+
+    options["with_selection"] = with_selection
     db.classifier_info.find_one_and_update({'_id': algorithm_name},
                                            {"$set": {"_id": algorithm_name,
                                                      "train_file_size": len(target),
                                                      "options:": options,
-                                                     "with_selection": with_selection}},
+                                                     "training_time": time_stop - time_start}},
                                            upsert=True)
 
     db.models.find_one_and_update({'_id': algorithm_name},
                                   {"$set": {"pickle": pickle.dumps(algorithms[algorithm_name].model),
-                                            "mask": algorithms[algorithm_name].mask_}},
+                                            "mask":         json_util.dumps(mask)}},
                                   upsert=True)
 
     return "", status.HTTP_200_OK
