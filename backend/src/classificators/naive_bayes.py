@@ -23,7 +23,7 @@ def train_model(data, target, mask, **kwargs):
 def predict(data):
 
     if mask_ is not None:
-        data = data[mask_.tolist(), ...]
+        data = data[..., mask_]
 
     return model.predict(data)
 
