@@ -1,0 +1,211 @@
+%Zawartość dokumentacji: 
+%- Wstęp - zawierający cel i zakres projektu, uzasadnienie biznesowe, słownik pojęć
+%- Analizę systemu - krótki opis działania systemu, wymagania funkcjonalne i niefunkcjonalne
+%- Projekt systemu - opis wykorzystywanych technologii, diagramy klas, schemat systemu, opis działania algorytmów itp.
+%- Opis techniczny - opis implementacji poszczegółnych elementów, istotne fragmenty kodu
+%- Opis funkcjonalny - instalacja i konfiguracja systemu, opis wszystkich dostępnych funkcjonalności
+%- Testy wydajnościowe - opis przeprowadzonych testów, zestawienie wyników, analiza wyników
+%- Spisy tabel, obrazów 
+
+
+
+\documentclass[a4paper, 11pt]{report}
+\usepackage{listings}
+\usepackage[hyphens]{url}
+\usepackage{rotating}
+\usepackage{tikz}
+\usepackage{float}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[export]{adjustbox}
+\usepackage{lmodern}
+\usepackage{indentfirst}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{geometry}
+\usepackage[section]{placeins}
+\setlength{\parskip}{1em}
+\usepackage{enumerate}
+\usepackage[noend]{algorithmic}
+
+\usepackage{listings}
+\usepackage{color}
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\usepackage{listings}
+
+\lstdefinelanguage{JavaScript}{
+  keywords={break, case, catch, continue, debugger, default, delete, do, else, finally, for, function, if, in, instanceof, new, return, switch, this, throw, try, typeof, var, void, while, with},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  sensitive=true
+}
+
+\lstset{
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+\selectlanguage{polish}
+\author{Mateusz~Gniewkowski 218138 \\
+		Beata~Szeląg 218139}
+\title{\huge Klasyfikacja danych dt. raka piersi \\
+			 Informatyka w medycynie - projekt}
+
+\date {}
+\usepackage{graphicx} 
+
+\renewcommand{\lstlistingname}{Code}
+\lstset{
+    frame=tb, %%tb
+    tabsize=4, % tab space width
+    showstringspaces=false, % don't mark spaces in strings
+    keywordstyle=\color{blue}, % keyword color
+    numbers=none,
+}
+\begin{document}
+\maketitle
+\tableofcontents{}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+ 
+ 
+\chapter{Wstęp}
+
+
+Celem projektu jest ....
+
+W ramach projektu zostanie zaprojektowany i zaimplementowany ...
+
+\section{Uzasadnienie biznesowe}
+
+...
+
+\chapter{Analiza systemu}
+
+	\section{Opis działania systemu}
+	
+	System pozwala na ...
+		
+	\section{Wymagania funkcjonalne}
+	
+	\section{Wymagania niefunkcjonalne}
+	
+	
+\chapter{Projekt systemu}
+
+	\section{Backend}
+	
+	\subsection{Klasyfikacja}	
+	
+	\subsection{REST API}
+	
+	
+	\section{Aplikacja internetowa}
+	
+Aplikacja kliencka ma umożliwiać użytkownikom wygodny dostęp do oferowanych przez nasz system funkcjonalności. 	Składa się ona z dwóch głównych części:
+	
+	\begin{enumerate}
+	\item menu w górnej części ekranu
+	\item głównej części ekranu, w której wyświetlamy poszczególne widoki.
+	\end{enumerate}
+	
+\noindent
+Widoki aplikacji:
+\begin{itemize}
+\item hghgfgh
+\end{itemize}
+
+\noindent
+Do stworzenia aplikacji klienckiej wykorzystaliśmy Vue.js oraz dodatkowo:
+\begin{itemize}
+\item bootstrap
+\item font awsome 
+\item axios
+\end{itemize}
+
+\noindent
+Działanie aplikacji internetowej:
+\begin{itemize}
+\item przejścia pomiędzy kolejnymi widokami bjjkhjkhkjhjkhjkhjkh
+\item aplikacja komunikuje się z serwerem poprzez REST API wysyłając zapytania http na zdefiniowane endpointy
+\end{itemize}
+
+	
+	\section{Baza danych}
+	
+W naszym projekcie postanowiliśmy skorzystać z nierelacjnej bazy danych NoSql jaką jest MongoDB. MongoDB jest bazą przechowującą dokumenty w formacie json. Bazy danych nie dzieli się na tabelę a na kolekcje, które przechowują dany typ dokumentów reprezentujących jakiś obiekt. Zaplanowaliśmy stworzenie dwóch kolekcji - ghhghghfhg...........hhghghghghg
+		
+\chapter{Opis techniczny}
+
+	\section{Backend}
+	
+	\section{Aplikacja internetowa}
+
+		\subsection{Szablon aplikacji internetowej}
+		
+		\subsection{Trenowanie}
+		\subsection{Predykcja}
+		\subsection{Statystyki}
+	
+	\section{Baza danych}
+
+
+\chapter{Opis funkcjonalny}
+
+	\section{Instalacja i konfiguracja systemu}
+	
+
+\chapter{Testy}
+
+	Testy zostały przeprowadzone kjhkjhjkhjhgjhjhhjjhhjgjhg
+	
+	\section{Opis i zestawienie wyników}
+	
+	Zebrane wyniki zostały zestawione i przedstawione w poniższej tabeli oraz na wykresie.
+	
+%	\begin{longtable}{|c|c|c|}
+%		\caption{Tabela zależności czasu wykonania algorytmu od ilości slaveów dla poszczególnych instancji} \\ \hline
+%		\multirow{2}{*}{slaves}  & \multicolumn{2}{ |c| }{ Czas [s] } \\  \cline{2-3}
+%		& MIN & MID \\ \hline
+%		1 & 36 & 78 \\ \hline
+%		2 & 30 & 45 \\ \hline
+%		4 & 36 & 40 \\ \hline
+%	\end{longtable}
+
+%	\begin{figure}[!ht]
+%		\centering
+%		\caption{Wykres zależności czasu wykonania algorytmu od ilości slaveów dla poszczególnych instancji} 
+%		\includegraphics[width=5in]{WykresCzasOdSlave}
+%		\label{fig_diag}
+%	\end{figure}
+%	
+	
+	\section{Analiza wyników}	
+
+\chapter{Spis tabel i obrazów}
+
+
+\begingroup
+\let\clearpage\relax
+\listoffigures
+\listoftables
+\endgroup
+
+
+\end{document}
