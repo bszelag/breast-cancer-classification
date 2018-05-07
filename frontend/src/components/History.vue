@@ -36,9 +36,10 @@ export default {
       items: [],
       fields: [
         {key: 'time.$date', sortable: true, formatter: (value, key, item) => { return (new Date(value)).toLocaleString() }, label: 'Date (UTC)'},
-        {key: 'algorithm', label: 'Algorithm', sortable: true},
-        {key: 'size', label: 'Train File Size', sortable: true},
+        {key: 'classifier_info._id', label: 'Algorithm', sortable: true},
+        {key: 'classifier_info.train_file_size', label: 'Train File Size', sortable: true},
         {key: 'samples', label: 'Number of Samples', sortable: true},
+        {key: 'classifier_info.training_time', label: 'Training Time', sortable: true},
         {key: 'more'}
       ]
     }
