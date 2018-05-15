@@ -17,16 +17,10 @@
         </div>
       </div>
       <div class="results-part" >
-        <h5 >Options</h5>
+        <h5>Options</h5>
         <h6 v-for="(o, i, a) in results['classifier_info']" v-bind:key="a" v-if="a===1">
-          {{ o }}
+          {{ JSON.stringify(o) }}
         </h6>
-        <h5 >Training time</h5>
-        <h6>{{ results['classifier_info']['training_time'] + 's' }}</h6>
-        <h5 >Training file size</h5>
-        <h6>{{ results['classifier_info']['train_file_size'] }}</h6>
-      </div>
-      <div v-if="results['classifier_info']['training_time']" class="results-part">
 
       </div>
       <h5>Results</h5>
