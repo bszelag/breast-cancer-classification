@@ -21,6 +21,7 @@
         <h6 v-for="(o, i, a) in results['classifier_info']" v-bind:key="a" v-if="a===1">
           {{ JSON.stringify(o) }}
         </h6>
+
       </div>
       <h5>Results</h5>
       <div class="d-flex justify-content-around flex-wrap">

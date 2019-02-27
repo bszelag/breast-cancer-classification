@@ -88,32 +88,71 @@
 \chapter{Wstęp}
 
 
-Celem projektu jest ....
+Celem projektu jest zaprojektowanie systemu umożliwiającego klasyfikację danych medycznych. Wykorzystywane są ogólnodostepne dane dotyczące raka piersi pochodzące ze strony \textit{https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin}.
 
-W ramach projektu zostanie zaprojektowany i zaimplementowany ...
+Każda próbka obecna w zbiorze posiada swój numer id oraz 9 cech, które ją opisują. Są to:
+\begin{enumerate}
+\item Clump Thickness              
+\item Uniformity of Cell Size       
+\item Uniformity of Cell Shape     
+\item Marginal Adhesion             
+\item Single Epithelial Cell Size  
+\item Bare Nuclei                  
+\item Bland Chromatin              
+\item Normal Nucleoli               
+\item Mitoses                       
+\end{enumerate}
+Cechy te zostały określone na podstawie biopsji. Ich wartości znajdują się w zakresie 1-10.
+Klasy, które są rozpatrywane w ramach tego zbioru dsanych to:
+\begin{itemize}
+\item benign - nowotwór łagodny
+\item malignant - nowotwór złośliwy
+\end{itemize}
 
-\section{Uzasadnienie biznesowe}
+W ramach projektu zostanie zaprojektowany i zaimplementowany system pozwalający na tworzenie i trenowanie różnego rodzaju klasyfikatorów, następnie wykorzystanie ich do przydzielenia odpowiedniej klasy nowym danym. Ponadto możliwe będzie przeglądanie historii klasyfikatorów.
 
-...
 
 \chapter{Analiza systemu}
 
 	\section{Opis działania systemu}
 	
-	System pozwala na ...
+	System pozwala na stworzenie i trening klasyfikatora bazując na danych wejściowych dostarczanych przez użytkownika. Dane są wprowadzane w formie pliku csv. Użytkownik może wybrać rodzaj klasyfikatora oraz może okreslić charakterystyczne dla niego opcje. Po stworzeniu klasyfikatora można go użyć do predykcji - w tym celu użytkownik powinien podać dane w formacie csv. Istnieje możliwość sprawdzenia skuteczności aktualnego klasyfikatora - w tym celu należy wprowadzić dane wraz z określonymi klasami.
+	
+	\subsection{Użytkownik}
+	Użytkownik systemu nie musi mieć wiedzy na temat klasyfikatorów, czy ich działania. Jednak będzie to pomocne w uzyskaniu lepszych wyników (pomoże to wybrać najlepsze opcje dotyczące klasyfikatora).
 		
 	\section{Wymagania funkcjonalne}
+	\begin{enumerate}
+	\item Użytkownik ma możliwość stworzenia (wytrenowania) klasyfikatora, w tym celu powinien podać:
+		\begin{itemize}
+		\item plik z danymi w formacie csv 
+		\item wybrać rodzaj klasyfikatora (Naive Bayes, SVM, drzewo decyzyjne)
+		\item wybrać opcje charakterystyczne dla danego klasyfikatora:
+			\begin{itemize}
+			\item Naive Bayes: rodzaj (dystrybucja)
+			\item SVM: kernel, C, gamma
+			\item drzewo decyzyjne: criterion, splitter, minimal split of samples
+			\end{itemize}
+		\item opcjonalnie: określić, czy klasyfikator powinien korzystać z selekcji cech
+		\end{itemize}
+	\end{enumerate}
 	
 	\section{Wymagania niefunkcjonalne}
+	
+	\begin{enumerate}
+	\item Aplikacja powinna zapewniać prosty i przejrzysty interfejs graficzny użytkownika.
+	\item System powinien zapewnić możliwość rozbudowy (łatwe dodawanie nowych klasyfikatorów, ich opcji)
+	\item System powinien działać na przeglądarkach Google Chrome (od wersji 49), Mozilla Firefox (od wersji 59), Safari (od wersji 11), Edge (od wersji 16) oraz na mobilnych przeglądarkach Opera Mini i Chrome w wersji na Androida (od wersji 66)
+	\end{enumerate}
 	
 	
 \chapter{Projekt systemu}
 
 	\section{Backend}
 	
-	\subsection{Klasyfikacja}	
+		\subsection{Klasyfikacja}	
 	
-	\subsection{REST API}
+		\subsection{REST API}
 	
 	
 	\section{Aplikacja internetowa}
@@ -128,28 +167,30 @@ Aplikacja kliencka ma umożliwiać użytkownikom wygodny dostęp do oferowanych 
 \noindent
 Widoki aplikacji:
 \begin{itemize}
-\item hghgfgh
+\item trening
+\item predykcja
+\item statystyki
 \end{itemize}
 
 \noindent
-Do stworzenia aplikacji klienckiej wykorzystaliśmy Vue.js oraz dodatkowo:
+Do stworzenia aplikacji klienckiej wykorzystaliśmy Vue.js w wersji 2 oraz dodatkowo:
 \begin{itemize}
-\item bootstrap
-\item font awsome 
-\item axios
+\item bootstrap - biblioteka frontendowa
+\item font awsome - zbiór ikon
+\item axios - bilbioteka pozwalająca na tworzenie i wysyłanie zapytań REST
 \end{itemize}
 
 \noindent
 Działanie aplikacji internetowej:
 \begin{itemize}
-\item przejścia pomiędzy kolejnymi widokami bjjkhjkhkjhjkhjkhjkh
+\item przejścia pomiędzy kolejnymi widokami (trenowanie - predykcja - statystyki)
 \item aplikacja komunikuje się z serwerem poprzez REST API wysyłając zapytania http na zdefiniowane endpointy
 \end{itemize}
 
 	
 	\section{Baza danych}
 	
-W naszym projekcie postanowiliśmy skorzystać z nierelacjnej bazy danych NoSql jaką jest MongoDB. MongoDB jest bazą przechowującą dokumenty w formacie json. Bazy danych nie dzieli się na tabelę a na kolekcje, które przechowują dany typ dokumentów reprezentujących jakiś obiekt. Zaplanowaliśmy stworzenie dwóch kolekcji - ghhghghfhg...........hhghghghghg
+W naszym projekcie postanowiliśmy skorzystać z nierelacjnej bazy danych NoSql jaką jest MongoDB. MongoDB jest bazą przechowującą dokumenty w formacie json. Bazy danych nie dzieli się na tabelę a na kolekcje, które przechowują dany typ dokumentów reprezentujących jakiś obiekt. Zaplanowaliśmy stworzenie dwóch kolekcji - ...
 		
 \chapter{Opis techniczny}
 
@@ -158,10 +199,29 @@ W naszym projekcie postanowiliśmy skorzystać z nierelacjnej bazy danych NoSql 
 	\section{Aplikacja internetowa}
 
 		\subsection{Szablon aplikacji internetowej}
+		\begin{itemize}
+		\item aplikacja jest podzielona na komponenty
+		\item dany komponent ma określone zadanie, np: komponent Results zawiera dane dotyczące danej predykcji, pozwala na ich przetworzenie i wyświetlenie
+		\end{itemize}
 		
 		\subsection{Trenowanie}
+		Komponent ten składa się z formularza, zawierającego pola potrzebne do stworzenia, treningu klasyfikatora. W zależności od wybranego algorytmu, wyświetla konkretne opcje do wybrania. Ponadto w ramach tego komponentu przygotowywane jest zapytanie do serwera, które umożliwia przesłanie danych z formularza. 
+		
 		\subsection{Predykcja}
+		Konponent sklada się z dwóch części: formularza i wyników predykcji. W formularzu użytkownik może okreslić rodzaj klasyfikatora oraz to, czy dane zawierają już klasy. W tej części przygotowywane jest również zapytanie wysyłające opisane dane do serwera. Następnie w ramach tego komponentu można wyświetlić wyniki predykcji. 
+		
+		\subsection{Wyświetlanie wyników}
+		\begin{itemize}
+		\item macierz błedu w formie wykresu kołowego
+		\item dodatkowe metryki określające trafność: (ERR, ACC, SN, SP, PREC, FPR, F1, MCC)
+		\item czas treningu
+		\item rozmiar pliku treningowego
+		\item wyniki klasyfikacji próbek
+		\end{itemize}
+		
 		\subsection{Statystyki}
+		Komponent zawiera wyniki wszystkich przeprowadzonych predykcji, zebrane w formie tabeli. Ponadto pozwala na sortowanie wyników według rodzaju algorytmu, rozmiaru pliku treningowego, liczby próbek w pliku, czasu treningu.
+		Dodatkowo wyświetlane są macierze błędu (w formie wykresów kołowych) dla każdego z trzech dostepnych algorytmów: Naive Bayes, SVM, drzewa decyzyjnego.
 	
 	\section{Baza danych}
 
